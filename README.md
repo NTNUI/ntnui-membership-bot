@@ -27,7 +27,7 @@ Make sure you have the required access permissions for the API and database.
 2. Build the Docker image
 
    ```bash
-   docker build -t ntnui-membership-bot
+   docker build -t ntnui-membership-bot .
    ```
 
 3. Create a `.env` with the following values
