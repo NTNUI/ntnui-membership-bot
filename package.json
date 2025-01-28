@@ -1,0 +1,19 @@
+{
+  "name": "ntnui-membership-bot",
+  "main": "main.js",
+  "description": "A Discord bot designed to support NTNUI groups by managing and tracking users' membership statuses efficiently.",
+  "dependencies": {
+    "discord.js": "^14.14.1",
+    "dotenv": "^16.4.7",
+    "moment-timezone": "^0.5.46",
+    "mongoose": "^8.8.4",
+    "node-schedule": "^2.1.1"
+  },
+  "scripts": {
+    "start": "node main.js",
+    "dev": "npx nodemon"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}
