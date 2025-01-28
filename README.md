@@ -20,7 +20,7 @@ Make sure you have the required access permissions for the API and database.
 1. Clone the repository
 
    ```bash
-   git clone https://github.com/vegardev/ntnui-membership-bot.git
+   git clone https://github.com/NTNUI/ntnui-membership-bot.git
    cd ntnui-membership-bot/
    ```
    
@@ -62,7 +62,7 @@ Optionally, you can clone the project yourself &mdash; it is recommended to have
 1. Clone the repository
 
    ```bash
-   git clone https://github.com/vegardev/ntnui-membership-bot.git
+   git clone https://github.com/NTNUI/ntnui-membership-bot.git
    cd ntnui-membership-bot/
    ```
 
