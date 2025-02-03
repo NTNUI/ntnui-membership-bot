@@ -8,7 +8,7 @@ module.exports = {
     .setDescription("View your account's membership status."),
   async execute(interaction) {
     const accountInfo = await Membership.findOne({
-      discord_id: interaction.member.id,
+      discord_id: interaction.user.id,
     });
 
     if (!accountInfo) {
