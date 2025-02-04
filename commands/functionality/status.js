@@ -23,7 +23,7 @@ module.exports = {
 
     let fetchedRow = await Membership.findOne({
       discord_id: member.id,
-    }).exec();
+    });
 
     if (!fetchedRow) {
       return interaction.editReply({

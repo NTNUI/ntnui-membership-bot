@@ -30,7 +30,6 @@ module.exports = {
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles)
     .setContexts(InteractionContextType.Guild),
   async execute(interaction, client) {
-    const memberships = await fetchMemberships();
     const role = await fetchRole(client);
     const member = interaction.options.getMember("target");
     const phone_number = interaction.options.getString("phone_number");
@@ -67,6 +66,7 @@ module.exports = {
       });
     }
 
+    const memberships = await fetchMemberships();
     // iterate over every membership in group
     for (let i = 0; i < memberships.results.length; i++) {
       if (phone_number !== memberships.results[i].phone_number) {
