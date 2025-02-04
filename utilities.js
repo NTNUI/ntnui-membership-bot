@@ -4,11 +4,11 @@ const myCache = new NodeCache({ stdTTL: 600, checkperiod: 300 });
 
 async function fetchMemberships() {
   const cacheKey = "membershipCache";
-  let data = myCache.get(cacheKey);
+  let membershipMap = myCache.get(cacheKey);
 
-  if (data) {
-    console.log("Returning cached membership data.");
-    return data;
+  if (membershipMap) {
+    console.log("Returning cached membership map.");
+    return membershipMap;
   }
 
   let memberships = [];
@@ -26,13 +26,17 @@ async function fetchMemberships() {
     }
 
     memberships = await response.json();
-    myCache.set(cacheKey, memberships);
-    console.log("Data returned successfully.");
+    membershipMap = new Map(
+      memberships.results.map((member) => [member.phone_number, member])
+    );
+
+    myCache.set(cacheKey, membershipMap);
+    console.log("Data (lookup map) returned successfully.");
   } catch (error) {
     console.error(error);
   }
 
-  return memberships;
+  return membershipMap;
 }
 async function fetchRole(client) {
   const guild = client.guilds.cache.get(process.env.guildId);

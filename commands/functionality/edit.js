@@ -33,8 +33,6 @@ module.exports = {
     const role = await fetchRole(client);
     const member = interaction.options.getMember("target");
     const phone_number = interaction.options.getString("phone_number");
-    let new_ntnui_no = 0;
-    let new_has_valid_group_membership = false;
     const phone_regex = /^\+\d+$/;
 
     // check if target is registered
@@ -66,37 +64,26 @@ module.exports = {
       });
     }
 
-    const memberships = await fetchMemberships();
-    // iterate over every membership in group
-    for (let i = 0; i < memberships.results.length; i++) {
-      if (phone_number !== memberships.results[i].phone_number) {
-        continue;
-      }
-
-      new_ntnui_no = memberships.results[i].ntnui_no;
-      new_ntnui_contract_expiry_date =
-        memberships.results[i].ntnui_contract_expiry_date;
-      new_has_valid_group_membership =
-        memberships.results[i].has_valid_group_membership;
-    }
+    const membershipMap = await fetchMemberships();
+    const fetchedMember = membershipMap.get(phone_number);
 
     try {
       const affectedRows = await Membership.findOneAndUpdate(
         { discord_id: member.id },
         {
-          ntnui_no: new_ntnui_no,
-          has_valid_group_membership: new_has_valid_group_membership,
-          ntnui_contract_expiry_date: new_ntnui_contract_expiry_date,
+          ntnui_no: fetchedMember.ntnui_no,
+          has_valid_group_membership: fetchedMember.has_valid_group_membership,
+          ntnui_contract_expiry_date: fetchedMember.ntnui_contract_expiry_date,
         }
       );
 
       await interaction.editReply({
-        content: `✅ ${member.displayName} was edited, their new NTNUI ID is ${new_ntnui_no}.`,
+        content: `✅ ${member.displayName} was edited, their new NTNUI ID is ${fetchedMember.ntnui_no}.`,
         flags: MessageFlags.Ephemeral,
       });
 
       if (affectedRows) {
-        if (new_has_valid_group_membership) {
+        if (fetchedMember.has_valid_group_membership) {
           await member.roles.add(role);
         } else {
           await member.roles.remove(role);

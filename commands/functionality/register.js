@@ -74,41 +74,36 @@ module.exports = {
       });
     }
 
-    const memberships = await fetchMemberships();
+    const membershipMap = await fetchMemberships();
+    const member = membershipMap.get(phone_number);
+
     // new entry into database
-    for (i = 0; i < memberships.results.length; i++) {
-      if (phone_number !== memberships.results[i].phone_number) {
-        continue;
+    try {
+      const new_entry = new Membership({
+        discord_id: discordId,
+        ntnui_no: member.ntnui_no,
+        has_valid_group_membership: member.has_valid_group_membership,
+        ntnui_contract_expiry_date: member.ntnui_contract_expiry_date,
+      });
+      await new_entry.save();
+
+      if (role && new_entry.has_valid_group_membership) {
+        await interaction.member.roles.add(role);
       }
-
-      try {
-        const new_entry = new Membership({
-          discord_id: discordId,
-          ntnui_no: memberships.results[i].ntnui_no,
-          has_valid_group_membership:
-            memberships.results[i].has_valid_group_membership,
-          ntnui_contract_expiry_date:
-            memberships.results[i].ntnui_contract_expiry_date,
-        });
-        await new_entry.save();
-
-        if (role && new_entry.has_valid_group_membership) {
-          await interaction.member.roles.add(role);
-        }
+      return interaction.editReply({
+        content: `🎉 Your Discord account has successfully been linked to NTNUI, welcome aboard **${member.first_name} ${member.last_name}**`,
+        flags: MessageFlags.Ephemeral,
+      });
+    } catch (error) {
+      console.log(error);
+      if (error.code === 11000) {
         return interaction.editReply({
-          content: `🎉 Your Discord account has successfully been linked to NTNUI, welcome aboard **${memberships.results[i].first_name} ${memberships.results[i].last_name}**`,
+          content: `⚠️ Error: Either Discord ID or phone number is already registered.`,
           flags: MessageFlags.Ephemeral,
         });
-      } catch (error) {
-        console.log(error);
-        if (error.code === 11000) {
-          return interaction.editReply({
-            content: `⚠️ Error: Either Discord ID or phone number is already registered.`,
-            flags: MessageFlags.Ephemeral,
-          });
-        }
       }
     }
+
     return interaction.editReply({
       content: `💭 '${phone_number}' is not an active phone number.\n📝 If this is your phone number, head over here to [✨ NTNUI ✨](https://medlem.ntnui.no/register/verify) to activate your NTNUI account!`,
       flags: MessageFlags.Ephemeral,
