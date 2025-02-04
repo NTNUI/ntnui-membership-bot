@@ -55,10 +55,9 @@ module.exports = {
     // find member with corresponding phone number and set their
     // ntnui_no as value to their Discord ID key.
     const phone_regex = /^\+\d+$/;
-    const memberships = await fetchMemberships();
     const role = await fetchRole(client);
     const registered = await Membership.findOne({
-      where: { discord_id: discordId },
+      discord_id: discordId,
     });
 
     if (registered) {
@@ -75,6 +74,7 @@ module.exports = {
       });
     }
 
+    const memberships = await fetchMemberships();
     // new entry into database
     for (i = 0; i < memberships.results.length; i++) {
       if (phone_number !== memberships.results[i].phone_number) {
@@ -109,7 +109,6 @@ module.exports = {
         }
       }
     }
-
     return interaction.editReply({
       content: `💭 '${phone_number}' is not an active phone number.\n📝 If this is your phone number, head over here to [✨ NTNUI ✨](https://medlem.ntnui.no/register/verify) to activate your NTNUI account!`,
       flags: MessageFlags.Ephemeral,
