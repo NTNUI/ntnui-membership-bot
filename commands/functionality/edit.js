@@ -45,7 +45,7 @@ module.exports = {
 
     // no? tell them to register!
     if (!registered) {
-      return interaction.reply({
+      return interaction.editReply({
         content: `❔ Could not find a registered Discord account.\n\n📝 Make sure they are registered!`,
         flags: MessageFlags.Ephemeral,
       });
@@ -53,7 +53,7 @@ module.exports = {
 
     // if registered, but invalid phone number, use a valid one!
     if (!phone_number.match(phone_regex)) {
-      return interaction.reply({
+      return interaction.editReply({
         content: `❌ Please use a phone number with its country code (for example +47).`,
         flags: MessageFlags.Ephemeral,
       });
@@ -61,7 +61,7 @@ module.exports = {
 
     // if the role somehow does not exist, throw an error.
     if (!role) {
-      return interaction.reply({
+      return interaction.editReply({
         content: "⚠️ Error: Could not find the required role.",
         ephemeral: true,
       });
@@ -90,7 +90,7 @@ module.exports = {
         }
       );
 
-      await interaction.reply({
+      await interaction.editReply({
         content: `✅ ${member.displayName} was edited, their new NTNUI ID is ${new_ntnui_no}.`,
         flags: MessageFlags.Ephemeral,
       });
@@ -105,7 +105,7 @@ module.exports = {
       return;
     } catch (error) {
       if (error.code === 11000) {
-        return interaction.reply({
+        return interaction.editReply({
           content: `⚠️ Error: Phone number is already registered.`,
           flags: MessageFlags.Ephemeral,
         });

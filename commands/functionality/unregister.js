@@ -23,7 +23,7 @@ module.exports = {
     const role = await fetchRole(client);
 
     if (!role) {
-      return interaction.reply({
+      return interaction.editReply({
         content: `❔ Role ${process.env.MEMBER_ROLE} not found in this server.`,
         flags: MessageFlags.Ephemeral,
       });
@@ -35,19 +35,19 @@ module.exports = {
       });
 
       if (!affectedRow) {
-        return interaction.reply({
+        return interaction.editReply({
           content: `❌ Discord user is not registered.`,
           flags: MessageFlags.Ephemeral,
         });
       } else {
         await member.roles.remove(role);
-        return interaction.reply({
+        return interaction.editReply({
           content: `✅ ${member.displayName} has been unregistered.`,
           flags: MessageFlags.Ephemeral,
         });
       }
     } catch (error) {
-      interaction.reply({
+      interaction.editReply({
         content: `⚠️ Error:\n${error.message}`,
         flags: MessageFlags.Ephemeral,
       });

@@ -12,7 +12,7 @@ module.exports = {
     });
 
     if (!accountInfo) {
-      return interaction.reply({
+      return interaction.editReply({
         content: `❌ Your Discord user is not registered yet.`,
         flags: MessageFlags.Ephemeral,
       });
@@ -30,12 +30,12 @@ module.exports = {
     update_date = moment(update_date).format("D/M/YYYY hh:mm:ss");
 
     if (!valid) {
-      return interaction.reply({
+      return interaction.editReply({
         content: `⌛ Your membership has expired.\n\n🕒 You registered at ${registry_date}.\n🔃 Updated at ${update_date} (${timestamp}).`,
         flags: MessageFlags.Ephemeral,
       });
     }
-    return interaction.reply({
+    return interaction.editReply({
       content: `⏳ Your membership expires ${expiry_date}\n\n🕒 You registered at ${registry_date}.\n🔃 Updated at ${update_date} (${timestamp}).`,
       flags: MessageFlags.Ephemeral,
     });

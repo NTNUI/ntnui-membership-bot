@@ -22,7 +22,7 @@ module.exports = {
     const member = interaction.options.getMember("target");
     const role = await fetchRole(client);
     if (!role) {
-      return interaction.reply({
+      return interaction.editReply({
         content: `❔ Role ${process.env.MEMBER_ROLE} not found in this server.`,
         flags: MessageFlags.Ephemeral,
       });
@@ -35,18 +35,18 @@ module.exports = {
         )
       ) {
         await member.roles.add(role);
-        return interaction.reply({
+        return interaction.editReply({
           content: `✅ Successfully granted the ${process.env.MEMBER_ROLE} role to ${member.displayName}.`,
           flags: MessageFlags.Ephemeral,
         });
       } else {
-        return interaction.reply({
+        return interaction.editReply({
           content: `❌ ${member.displayName} already has the role ${process.env.MEMBER_ROLE}.`,
           flags: MessageFlags.Ephemeral,
         });
       }
     } catch (error) {
-      return interaction.reply({
+      return interaction.editReply({
         content: `⚠️ Error: Failed to grant role:\n${error.message}`,
         flags: MessageFlags.Ephemeral,
       });

@@ -62,14 +62,14 @@ module.exports = {
     });
 
     if (registered) {
-      return interaction.reply({
+      return interaction.editReply({
         content: `❌ Your Discord account is already registered.`,
         flags: MessageFlags.Ephemeral,
       });
     }
 
     if (!phone_number.match(phone_regex)) {
-      return interaction.reply({
+      return interaction.editReply({
         content: `❌ Please use a phone number with its country code (for example +47).`,
         flags: MessageFlags.Ephemeral,
       });
@@ -95,14 +95,14 @@ module.exports = {
         if (role && new_entry.has_valid_group_membership) {
           await interaction.member.roles.add(role);
         }
-        return interaction.reply({
+        return interaction.editReply({
           content: `🎉 Your Discord account has successfully been linked to NTNUI, welcome aboard **${memberships.results[i].first_name} ${memberships.results[i].last_name}**`,
           flags: MessageFlags.Ephemeral,
         });
       } catch (error) {
         console.log(error);
         if (error.code === 11000) {
-          return interaction.reply({
+          return interaction.editReply({
             content: `⚠️ Error: Either Discord ID or phone number is already registered.`,
             flags: MessageFlags.Ephemeral,
           });
@@ -110,7 +110,7 @@ module.exports = {
       }
     }
 
-    return interaction.reply({
+    return interaction.editReply({
       content: `💭 '${phone_number}' is not an active phone number.\n📝 If this is your phone number, head over here to [✨ NTNUI ✨](https://medlem.ntnui.no/register/verify) to activate your NTNUI account!`,
       flags: MessageFlags.Ephemeral,
     });

@@ -24,7 +24,7 @@ module.exports = {
     const role = await fetchRole(client);
 
     if (!role) {
-      return interaction.reply({
+      return interaction.editReply({
         content: `❔ Role ${process.env.MEMBER_ROLE} not found in this server.`,
         flags: MessageFlags.Ephemeral,
       });
@@ -35,18 +35,18 @@ module.exports = {
         member.roles.cache.some((role) => role.name === process.env.MEMBER_ROLE)
       ) {
         await member.roles.remove(role);
-        return interaction.reply({
+        return interaction.editReply({
           content: `✅ Successfully revoked the ${process.env.MEMBER_ROLE} role from ${member.displayName}.`,
           flags: MessageFlags.Ephemeral,
         });
       } else {
-        return interaction.reply({
+        return interaction.editReply({
           content: `❌ ${member.displayName} had no ${process.env.MEMBER_ROLE} role to revoke.`,
           flags: MessageFlags.Ephemeral,
         });
       }
     } catch (error) {
-      return interaction.reply({
+      return interaction.editReply({
         content: `⚠️ Error: Failed to revoke role\n${error.message}`,
         flags: MessageFlags.Ephemeral,
       });

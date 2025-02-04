@@ -54,7 +54,7 @@ module.exports = {
       }
     }
 
-    return interaction.reply({
+    return interaction.editReply({
       content: "🔃 Memberships have been refreshed!",
       flags: MessageFlags.Ephemeral,
     });

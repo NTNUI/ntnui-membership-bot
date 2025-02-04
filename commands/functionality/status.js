@@ -26,7 +26,7 @@ module.exports = {
     }).exec();
 
     if (!fetchedRow) {
-      return interaction.reply({
+      return interaction.editReply({
         content: `❔ No database entry found for ${member.displayName}.`,
         flags: MessageFlags.Ephemeral,
       });
@@ -34,7 +34,7 @@ module.exports = {
 
     fetchedRow = JSON.stringify(fetchedRow, null, 2);
 
-    interaction.reply({
+    interaction.editReply({
       content: `🔍 Database entry of ${member.displayName}:\n\`\`\`json\n${fetchedRow}\n\`\`\``,
       flags: MessageFlags.Ephemeral,
     });
