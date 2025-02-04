@@ -27,7 +27,7 @@ module.exports = {
     );
     let update_date = accountInfo.get("updatedAt");
     const timestamp = `<t:${Date.parse(update_date) / 1000}:R>`;
-    update_date = moment(update_date).format("D/M/YYYY hh:mm:ss");
+    update_date = moment(update_date).format("D/M/YYYY HH:mm:ss");
 
     if (!valid) {
       return interaction.editReply({
