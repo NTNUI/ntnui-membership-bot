@@ -23,7 +23,7 @@ Make sure you have the required access permissions for the API and database.
    git clone https://github.com/NTNUI/ntnui-membership-bot.git
    cd ntnui-membership-bot/
    ```
-   
+
 2. Build the Docker image
 
    ```bash
@@ -84,11 +84,11 @@ Optionally, you can clone the project yourself &mdash; it is recommended to have
 
 | Commands                        | Explanation                                                                       | Required role           |
 | ------------------------------- | --------------------------------------------------------------------------------- | ----------------------- |
-| `/register <phone_number>`      | Register the current Discord account to the NTNUI account with `<phone_number>`   | Regular member          |
-| `/accountinfo`                  | View the current Discord account's membership info.                               | Regular member          |
+| `/register <phone_number>`      | Register the current Discord account to the NTNUI account with `<phone_number>`   | Server member           |
+| `/accountinfo`                  | View the current Discord account's membership info.                               | Server member           |
 | `/unregister <phone_number>`    | Unregister a Discord account from their NTNUI account with `<phone_number>`       | 'Styret' (Board member) |
 | `/grant OR revoke <target>`     | Grants or revokes membership role to `<target>`                                   | 'Styret' (Board member) |
-| `/refresh`                      | Refresh the local database with up-to-date membership statuses.                   | 'Styret' (Board member) |
+| `/refresh`                      | Refresh the remote database with up-to-date membership statuses.                  | 'Styret' (Board member) |
 | `/status <target>`              | Look up a registered `<target>` Discord account's database entry.                 | 'Styret' (Board member) |
 | `/edit <target> <phone_number>` | Edits a `<target>` Discord account's NTNUI connection with a new `<phone_number>` | 'Styret' (Board member) |
 
