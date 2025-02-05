@@ -4,19 +4,21 @@ const { Membership } = require("./db.js");
 
 function refreshSchedule(client) {
   schedule.scheduleJob("0 0 6,12,18,0 * * *", async function (fireDate) {
-    const memberships = await fetchMemberships();
     const role = await fetchRole(client);
     const guild = client.guilds.cache.get(process.env.guildId);
     const members = await guild.members.fetch();
 
+    const membershipMap = await fetchMemberships();
     // iterate over every membership in group
-    for (let i = 0; i < memberships.results.length; i++) {
+    for (const membership of membershipMap.values()) {
       const currentRow = await Membership.findOne({
-        ntnui_no: memberships.results[i].ntnui_no,
+        ntnui_no: membership.ntnui_no,
       });
+
       if (!currentRow) {
         continue;
       }
+
       const discordId = currentRow.get("discord_id");
       const registeredMember = members.get(discordId);
 
@@ -27,13 +29,11 @@ function refreshSchedule(client) {
       await Membership.findOneAndUpdate(
         { discord_id: discordId },
         {
-          has_valid_group_membership:
-            memberships.results[i].has_valid_group_membership,
-          ntnui_contract_expiry_date:
-            memberships.results[i].ntnui_contract_expiry_date,
+          has_valid_group_membership: membership.has_valid_group_membership,
+          ntnui_contract_expiry_date: membership.ntnui_contract_expiry_date,
         }
       );
-      if (memberships.results[i].has_valid_group_membership) {
+      if (membership.has_valid_group_membership) {
         // grant current member MEMBER_ROLE
         await registeredMember.roles.add(role);
       } else {
