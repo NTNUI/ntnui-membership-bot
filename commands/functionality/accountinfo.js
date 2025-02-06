@@ -19,6 +19,7 @@ module.exports = {
     }
 
     const valid = accountInfo.get("has_valid_group_membership");
+
     const expiry_date = DateTime.fromISO(
       accountInfo.get("ntnui_contract_expiry_date")
     )
@@ -31,13 +32,12 @@ module.exports = {
       .setLocale("en")
       .toFormat("DDD', 'T");
 
-    const updateDateTime = DateTime.fromISO(
-      accountInfo.get("updatedAt")
-    ).setZone("Europe/Oslo");
+    const updateDateTime = DateTime.fromISO(accountInfo.get("updatedAt"))
+      .setZone("Europe/Oslo")
+      .setLocale("en");
 
     const update_date = updateDateTime.toFormat("DDD', 'T");
-
-    const timestamp = `<t:${Math.floor(updateDateTime.toSeconds())}:R>`;
+    const timestamp = updateDateTime.toFormat("X");
 
     if (!valid) {
       return interaction.editReply({
