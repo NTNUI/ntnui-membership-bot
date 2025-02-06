@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, MessageFlags } = require("discord.js");
 const { Membership } = require("../../db.js");
-const moment = require("moment");
+const { DateTime } = require("luxon");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -19,15 +19,25 @@ module.exports = {
     }
 
     const valid = accountInfo.get("has_valid_group_membership");
-    const expiry_date = moment(
+    const expiry_date = DateTime.fromISO(
       accountInfo.get("ntnui_contract_expiry_date")
-    ).format("Do of MMMM, YYYY");
-    const registry_date = moment(accountInfo.get("createdAt")).format(
-      "D/M/YYYY"
-    );
-    let update_date = accountInfo.get("updatedAt");
-    const timestamp = `<t:${Date.parse(update_date) / 1000}:R>`;
-    update_date = moment(update_date).format("D/M/YYYY HH:mm:ss");
+    )
+      .setZone("Europe/Oslo")
+      .setLocale("en")
+      .toFormat("DDD");
+
+    const registry_date = DateTime.fromISO(accountInfo.get("createdAt"))
+      .setZone("Europe/Oslo")
+      .setLocale("en")
+      .toFormat("DDD', 'T");
+
+    const updateDateTime = DateTime.fromISO(
+      accountInfo.get("updatedAt")
+    ).setZone("Europe/Oslo");
+
+    const update_date = updateDateTime.toFormat("DDD', 'T");
+
+    const timestamp = `<t:${Math.floor(updateDateTime.toSeconds())}:R>`;
 
     if (!valid) {
       return interaction.editReply({
