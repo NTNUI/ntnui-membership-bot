@@ -1,6 +1,4 @@
 const { Schema, default: mongoose } = require("mongoose");
-const moment = require("moment-timezone");
-const dateOslo = moment.tz(Date.now(), "Europe/Oslo");
 
 const membershipSchema = new Schema(
   {

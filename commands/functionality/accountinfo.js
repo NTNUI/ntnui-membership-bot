@@ -35,9 +35,7 @@ module.exports = {
 
     const ntnuiExpiryDate = expiryDate.toFormat("DDD");
 
-    const registryDateTime = DateTime.fromISO(accountInfo.get("createdAt"), {
-      setZone: true,
-    })
+    const registryDateTime = DateTime.fromJSDate(accountInfo.get("createdAt"))
       .setZone("Europe/Oslo")
       .setLocale("en");
 
@@ -50,7 +48,7 @@ module.exports = {
 
     const registryDate = registryDateTime.toFormat("DDD', 'T");
 
-    const updateDateTime = DateTime.fromISO(accountInfo.get("updatedAt"), {
+    const updateDateTime = DateTime.fromJSDate(accountInfo.get("updatedAt"), {
       setZone: true,
     })
       .setZone("Europe/Oslo")
@@ -64,7 +62,8 @@ module.exports = {
     }
 
     const updateDate = updateDateTime.toFormat("DDD', 'T");
-    const timestamp = updateDateTime.toFormat("X");
+    let timestamp = updateDateTime.toFormat("X");
+    timestamp = `<t:${timestamp}:R>`;
 
     const now = DateTime.now().setZone("Europe/Oslo");
 
@@ -77,13 +76,13 @@ module.exports = {
     } else if (!valid) {
       // Group membership expired
       return interaction.editReply({
-        content: `⌛ Your **${process.env.GROUP_NAME}** membership has expired. Your **NTNUI** membership expires ${ntnuiExpiryDate}. \n\n🕒 You linked your Discord account to NTNUI at ${registryDate}.\n🔃 Updated at ${updateDate} (${timestamp}).`,
+        content: `⌛ Your **${process.env.GROUP_NAME}** membership has expired. Your **NTNUI** membership expires ${ntnuiExpiryDate}.\n\n🕒 You linked your Discord account to NTNUI at ${registryDate}.\n🔃 Updated at ${updateDate} (${timestamp}).`,
         flags: MessageFlags.Ephemeral,
       });
     } else {
       // Both memberships in good standing
       return interaction.editReply({
-        content: `✅ Your **${process.env.GROUP_NAME}** membership is in good standing!\n⏳ Your **NTNUI** membership expires ${ntnuiExpiryDate}\n\n🕒 You linked your Discord account to NTNUI at ${registryDate}.\n🔃 Updated at ${updateDate} (${timestamp}).`,
+        content: `✅ Your **${process.env.GROUP_NAME}** membership is in good standing!\n⏳ Your **NTNUI** membership expires ${ntnuiExpiryDate}.\n\n🕒 You linked your Discord account to NTNUI at ${registryDate}.\n🔃 Updated at ${updateDate} (${timestamp}).`,
         flags: MessageFlags.Ephemeral,
       });
     }
