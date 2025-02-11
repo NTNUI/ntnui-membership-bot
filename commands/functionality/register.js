@@ -48,13 +48,14 @@ module.exports = {
     )
     .setContexts(InteractionContextType.Guild),
   async execute(interaction, client) {
-    const phone_number = interaction.options.getString("phone_number");
+    const phoneNumber = interaction.options.getString("phone_number");
+    const normalizedPhoneNumber = phoneNumber.replace(/\s+/g, "");
     const discordId = interaction.member.id;
     // every eligible member must /register <phone_number>
     // this calls a function that iterates over all members,
     // find member with corresponding phone number and set their
     // ntnui_no as value to their Discord ID key.
-    const phone_regex = /^\+\d+$/;
+    const phoneRegex = /^\+\d+$/;
     const role = await fetchRole(client);
     const registered = await Membership.findOne({
       discord_id: discordId,
@@ -67,7 +68,7 @@ module.exports = {
       });
     }
 
-    if (!phone_number.match(phone_regex)) {
+    if (!normalizedPhoneNumber.match(phoneRegex)) {
       return interaction.editReply({
         content: `❌ Please use a phone number with its country code (for example +47).`,
         flags: MessageFlags.Ephemeral,
@@ -75,19 +76,19 @@ module.exports = {
     }
 
     const membershipMap = await fetchMemberships();
-    const member = membershipMap.get(phone_number);
+    const member = membershipMap.get(normalizedPhoneNumber);
 
     // new entry into database
     try {
-      const new_entry = new Membership({
+      const newEntry = new Membership({
         discord_id: discordId,
         ntnui_no: member.ntnui_no,
         has_valid_group_membership: member.has_valid_group_membership,
         ntnui_contract_expiry_date: member.ntnui_contract_expiry_date,
       });
-      await new_entry.save();
+      await newEntry.save();
 
-      if (role && new_entry.has_valid_group_membership) {
+      if (role && newEntry.has_valid_group_membership) {
         await interaction.member.roles.add(role);
       }
       return interaction.editReply({
@@ -105,7 +106,7 @@ module.exports = {
     }
 
     return interaction.editReply({
-      content: `💭 '${phone_number}' is not an active phone number.\n📝 If this is your phone number, head over here to [✨ NTNUI ✨](https://medlem.ntnui.no/register/verify) to activate your NTNUI account!`,
+      content: `💭 '${phoneNumber}' is not an active phone number.\n📝 If this is your phone number, head over here to [✨ NTNUI ✨](https://medlem.ntnui.no/register/verify) to activate your NTNUI account!`,
       flags: MessageFlags.Ephemeral,
     });
   },
