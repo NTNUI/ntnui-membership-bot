@@ -10,6 +10,9 @@ function refreshSchedule(client) {
 
     const membershipMap = await fetchMemberships();
     // iterate over every membership in group
+    if (!membershipMap) {
+      return console.log("Schedule could not run, membershipMap is empty.");
+    }
     for (const membership of membershipMap.values()) {
       const currentRow = await Membership.findOne({
         ntnui_no: membership.ntnui_no,
