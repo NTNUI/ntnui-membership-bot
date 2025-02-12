@@ -51,4 +51,22 @@ async function fetchRole(client) {
   return role;
 }
 
-module.exports = { fetchMemberships, fetchRole };
+function formatUptime(seconds) {
+  const days = Math.floor(seconds / 86400);
+  seconds %= 86400;
+  const hours = Math.floor(seconds / 3600);
+  seconds %= 3600;
+  const minutes = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+
+  const parts = [];
+
+  if (days > 0) parts.push(`${days} day${days !== 1 ? "s" : ""}`);
+  if (hours > 0) parts.push(`${hours} hour${hours !== 1 ? "s" : ""}`);
+  if (minutes > 0) parts.push(`${minutes} minute${minutes !== 1 ? "s" : ""}`);
+  parts.push(`${secs} second${seconds !== 1 ? "s" : ""}`);
+
+  return parts.join(", ");
+}
+
+module.exports = { fetchMemberships, fetchRole, formatUptime };
