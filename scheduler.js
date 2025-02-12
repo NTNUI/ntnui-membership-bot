@@ -3,7 +3,13 @@ const { fetchMemberships, fetchRole } = require("./utilities.js");
 const { Membership } = require("./db.js");
 
 function refreshSchedule(client) {
-  schedule.scheduleJob("0 0 6,12,18,0 * * *", async function (fireDate) {
+  const rule = new schedule.RecurrenceRule();
+  rule.second = 0;
+  rule.minute = 0;
+  rule.hour = [0, 6, 12, 18];
+  rule.tz = "Europe/Oslo";
+
+  schedule.scheduleJob(rule, async function (fireDate) {
     const role = await fetchRole(client);
     const guild = client.guilds.cache.get(process.env.guildId);
     const members = await guild.members.fetch();
