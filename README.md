@@ -17,6 +17,8 @@ If you have [Docker](https://www.docker.com/) installed, it is recommended to ru
 
 Make sure you have the required access permissions for the API and database.
 
+It is also recommended to familiarize yourself with Discord and the creation of bots, as this solution currently requires separate bot instances in order to separate groups from each other.
+
 1. Clone the repository
 
    ```bash
@@ -86,6 +88,7 @@ Optionally, you can clone the project yourself &mdash; it is recommended to have
 | ------------------------------- | --------------------------------------------------------------------------------- | ----------------------- |
 | `/register <phone_number>`      | Register the current Discord account to the NTNUI account with `<phone_number>`   | Server member           |
 | `/accountinfo`                  | View the current Discord account's membership info.                               | Server member           |
+| `/uptime`                       | View the NTNUI membership bot's current uptime.                                   | Server member           |
 | `/unregister <phone_number>`    | Unregister a Discord account from their NTNUI account with `<phone_number>`       | 'Styret' (Board member) |
 | `/grant OR revoke <target>`     | Grants or revokes membership role to `<target>`                                   | 'Styret' (Board member) |
 | `/refresh`                      | Refresh the remote database with up-to-date membership statuses.                  | 'Styret' (Board member) |
