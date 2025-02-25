@@ -69,4 +69,43 @@ function formatUptime(seconds) {
   return parts.join(", ");
 }
 
-module.exports = { fetchMemberships, fetchRole, formatUptime };
+async function updateMembershipCount(client) {
+  const guild = client.guilds.cache.get(process.env.guildId);
+  if (!guild) {
+    throw new Error("Guild not found,");
+  }
+
+  const cacheKey = "membershipCache";
+  let membershipMap = myCache.get(cacheKey);
+
+  const newName = `✅ Betalende medlemmer: ${membershipMap.size}`;
+  let channel = guild.channels.cache.find((channel) =>
+    channel.name.startsWith("✅ Betalende medlemmer:")
+  );
+
+  if (channel) {
+    try {
+      await channel.edit({
+        name: newName,
+      });
+    } catch (editError) {
+      console.error("Failed to update channel:", editError);
+    }
+  } else {
+    try {
+      await guild.channels.create({
+        name: newName,
+        type: ChannelType.GuildVoice,
+      });
+    } catch (createError) {
+      console.error("Failed to create channel:", createError);
+    }
+  }
+}
+
+module.exports = {
+  fetchMemberships,
+  fetchRole,
+  formatUptime,
+  updateMembershipCount,
+};
